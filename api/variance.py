@@ -24,7 +24,7 @@ def calculateCovarianceMatrix(returns, means):
 
 def getWeightsAndTickers(portfolioBreakdown):
     # get tickers
-    tickers = list(portfolioBreakdown.keys())
+    tickers = [k.upper() for k in portfolioBreakdown.keys()]
     
     # get the market value of each ticker in the portfolio
     portfolioValues = np.array([get_current_price(ticker) * portfolioBreakdown[ticker] for ticker in tickers])
@@ -36,9 +36,9 @@ def getWeightsAndTickers(portfolioBreakdown):
     return weights, tickers
 
 def calculatePortfolioVariance(portfolioBreakdown, period, interval):
-    print("weights and tickers")
-    weights, tickers = getWeightsAndTickers(portfolioBreakdown)
-    print("data from yfinance")
+    sanitizedPortfolio = {key.upper(): portfolioBreakdown[key] for key in portfolioBreakdown.keys()}
+    weights, tickers = getWeightsAndTickers(sanitizedPortfolio)
+    
     # get historical data from yfinance (daily values for 1 year)
     data = yf.download(tickers = list(tickers), period=period, interval=interval, group_by = 'ticker', threads = True)
     data = data.dropna()
@@ -50,7 +50,11 @@ def calculatePortfolioVariance(portfolioBreakdown, period, interval):
 
     for index, ticker in enumerate(tickers):
         # get ticker returns and mean ticker return using close and open columns
-        tickerReturns = list((data[ticker]['Close'] - data[ticker]['Open']) / data[ticker]['Open'] * 100)
+        if len(tickers) == 1:
+            tickerReturns = list((data['Close'] - data['Open']) / data['Open'] * 100)
+        else:
+            tickerReturns = list((data[ticker]['Close'] - data[ticker]['Open']) / data[ticker]['Open'] * 100)
+        
         meanTickerReturn = np.average(tickerReturns)
 
         # calculate variance
