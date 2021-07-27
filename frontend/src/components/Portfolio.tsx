@@ -78,14 +78,17 @@ export const Portfolio: React.FC<PortfolioProps> = () => {
     setStats({});
     setCalculating(true);
 
-    const { data } = await axios.post("http://127.0.0.1:5000/variance", {
-      portfolio: tickers.reduce((acc, ticker, index) => {
-        if (ticker && shares[index] !== 0) {
-          acc[ticker] = shares[index];
-        }
-        return acc;
-      }, {} as Record<string, number>),
-    });
+    const { data } = await axios.post(
+      "https://portfolio-variance-calculator.herokuapp.com/variance",
+      {
+        portfolio: tickers.reduce((acc, ticker, index) => {
+          if (ticker && shares[index] !== 0) {
+            acc[ticker] = shares[index];
+          }
+          return acc;
+        }, {} as Record<string, number>),
+      }
+    );
 
     const { variance, sd } = data;
 
