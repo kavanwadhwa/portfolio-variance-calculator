@@ -20,7 +20,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "craco start --hot",
+    "start": "craco start --hot && npm run start-api",
     "start-api": "cd api && venv/bin/flask run --no-debugger",
     "build": "craco build",
     "test": "craco test",
