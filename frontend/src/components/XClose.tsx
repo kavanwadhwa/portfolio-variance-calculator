@@ -8,7 +8,6 @@ export const XClose: React.FC<IconProps> = ({ size }) => (
     width={size}
     height={size}
     xmlns="http://www.w3.org/2000/svg"
-    className={`h-${size} w-${size}`}
     fill="red"
     viewBox="0 0 24 24"
     stroke="white"

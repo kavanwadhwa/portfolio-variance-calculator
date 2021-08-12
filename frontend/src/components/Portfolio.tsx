@@ -118,7 +118,7 @@ export const Portfolio: React.FC<PortfolioProps> = () => {
               onClick={() => onPairRemoved(index)}
               className="rounded-full flex-none flex items-center justify-center font-bold text-xs"
             >
-              <XClose size={8} />
+              <XClose size={24} />
             </button>
           </div>
         );
